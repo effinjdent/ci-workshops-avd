@@ -78,6 +78,26 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet9
+  description: P2P_s1-leaf5_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.16.1.26/31
+  peer: s1-leaf5
+  peer_interface: Ethernet3
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet10
+  description: P2P_s1-leaf6_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.16.1.30/31
+  peer: s1-leaf6
+  peer_interface: Ethernet3
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: s1-spine2
 ip_domain_lookup:
   source_interfaces:
@@ -93,6 +113,15 @@ local_users:
   sha512_password: $6$arista$gLTvJemCy0fmoG8tueGlXVpD0h37QekQIaybhZC8Rm6r8j1NHoC1eDbjXbi08GZ7pVRlEqbI3Kj0TEy4v8j3t.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDa3te/ileC5Ov8lJqh3EJ47V9rsMI/V/zh6y6DDUV0Nd2C32zv6zZLDE4vetoRRVvOnWXBmc8mgdPnxchd2RLgR4rBbh6Aa1ojh0gWGUM7+wgH8s52Al89Se72eRC4WH6UQXdPA9J431V0iJhVk2eGtJAn6rdf2x6mLZCb1tTvNeuEMp6t4sWc3xXxFgB67sKHrdMSVHA4H9lSiNqrDO0aa3KqShL7tXckPQNW1/Q8+tz8nc92ZcXyiyQeH+gSUsswrvhIRonW0c1DGdX3aZ/XGnIwBXEzP4L0IPUwkKTdvfhTpUXC6d3A2HTyXupyvkJNgjZRmngC1sC02pIKRq9/
     arista@ibm-cloud-ws-17-d01ee26a-eos
+logging:
+  vrfs:
+  - name: default
+    source_interface: Management0
+    hosts:
+    - name: 10.200.0.108
+      protocol: udp
+    - name: 10.200.1.108
+      protocol: udp
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -195,6 +224,16 @@ router_bgp:
     remote_as: '65103'
     peer: s1-brdr2
     description: s1-brdr2_Ethernet3
+  - ip_address: 172.16.1.27
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65104'
+    peer: s1-leaf5
+    description: s1-leaf5_Ethernet3
+  - ip_address: 172.16.1.31
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65104'
+    peer: s1-leaf6
+    description: s1-leaf6_Ethernet3
   - ip_address: 10.250.1.7
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
@@ -225,6 +264,16 @@ router_bgp:
     remote_as: '65102'
     peer: s1-leaf4
     description: s1-leaf4_Loopback0
+  - ip_address: 10.250.1.9
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65104'
+    peer: s1-leaf5
+    description: s1-leaf5_Loopback0
+  - ip_address: 10.250.1.10
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65104'
+    peer: s1-leaf6
+    description: s1-leaf6_Loopback0
   redistribute:
     connected:
       enabled: true
